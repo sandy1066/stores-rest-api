@@ -9,7 +9,7 @@ from resources.user import UserRegister
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 
-uri = os.environ.get('DATABASE_URL')
+uri = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
 if uri.startswith('postgres://'):
     uri = uri.replace('postgres://', 'postgresql://', 1)
 
