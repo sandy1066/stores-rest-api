@@ -1,4 +1,3 @@
-import sqlite3
 from flask_restful import Resource, reqparse
 from models.user import UserModel
 
@@ -25,3 +24,43 @@ class UserRegister(Resource):
         user.save_to_db()
 
         return {'message': "User created successfully"}, 201
+
+
+class User(Resource):
+    @classmethod
+    def get(cls, user_id):
+        user = UserModel.find_by_id(user_id)
+        if not user:
+            return {'message': 'User not found'}, 404
+        return user.json()
+
+    @classmethod
+    def delete(cls, user_id):
+        user = UserModel.find_by_id(user_id)
+        if not user:
+            return {'message': 'User not found'}, 404
+        user.delete_from_db()
+        return {'message': 'User deleted'}, 200
+
+
+class UserLogin(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('username',
+        type = str,
+        required = True,
+        help = "This field cannot be blank"
+    )
+    parser.add_argument('password',
+        type = str,
+        required = True,
+        help = "This field cannot be blank"
+    )
+
+    def post(self):
+        #get data from parser
+        data = self.parser.parse_args()
+        #find user in database
+        #check password
+        #create access token
+        #create refresh token
+        #return them
